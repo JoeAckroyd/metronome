@@ -1,20 +1,24 @@
 body {
-  color: #666;
-}
-
-.demo-list-item {
-  width: 300px;
-}
-
-#add {
-  position: absolute;
-  left: 20px;
-  top: 80px;
-  z-index: 999;
-}
-
-@media all and (min-width: 1024px) {
-  #add {
-    top: 100px;
+    color: inherit;
   }
-}
+  #add {
+    position: absolute;
+    left: 20px;
+    top: 80px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #play-icon {
+      vertical-align: middle;
+  }
+  
+  @media all and (min-width: 1024px) {
+    #add {
+      top: 100px;
+    }
+  }
+  
