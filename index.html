@@ -39,14 +39,11 @@
   </head>
   <body>
     <div class="metronome">
-      <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header">
-          <div class="mdl-layout__header-row">
-            <span class="mdl-layout-title">Metronome</span>
-          </div>
-          <div class="mdl-layout__header-row">
+      <div>
+        <div>
+          <div class="header">
             <button
-              class="mdl-button mdl-demo mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent"
+              class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-color--accent"
               id="add"
               onclick="play();"
             >
@@ -59,11 +56,11 @@
               <span class="visuallyhidden">Add</span>
             </button>
           </div>
-        </header>
+        </div>
 
-        <main class="mdl-layout__content">
-          <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--6-col">
+        <main>
+          <div>
+            <div>
               <h6 class="mdl-typography--title">Tempo</h6>
               <h2
                 id="bpm"
@@ -96,7 +93,7 @@
                   name="count"
                   id="countOutput"
                   >4</output
-                ><span class="mdl-typography--subhead"> counts</span>
+                ><span> / 4</span>
               </h2>
 
               <input
@@ -111,73 +108,78 @@
               />
             </div>
 
-            <div class="mdl-cell mdl-cell--6-col">
+            <div>
               <h6 class="mdl-typography--title">Volumes</h6>
-              <p>Master</p>
-              <input
-                class="mdl-slider mdl-js-slider"
-                type="range"
-                min="0"
-                max="100"
-                value="50"
-                tabindex="0"
-                oninput="masterVolume = event.target.value / 100;"
-              />
+              <div class="volumes-container">
+                <div>
+                  <p>Master</p>
+                  <input
+                    class="mdl-slider mdl-js-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="50"
+                    tabindex="0"
+                    oninput="masterVolume = event.target.value / 100;"
+                  />
 
-              <p>Accent</p>
-              <input
-                class="mdl-slider mdl-js-slider"
-                type="range"
-                min="0"
-                max="100"
-                value="100"
-                tabindex="0"
-                oninput="accentVolume = event.target.value / 100;"
-              />
+                  <p>1/1</p>
+                  <input
+                    class="mdl-slider mdl-js-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="100"
+                    tabindex="0"
+                    oninput="accentVolume = event.target.value / 100;"
+                  />
 
-              <p>Quarter Note</p>
-              <input
-                class="mdl-slider mdl-js-slider"
-                type="range"
-                min="0"
-                max="100"
-                value="75"
-                tabindex="0"
-                oninput="quarterVolume = event.target.value / 100;"
-              />
+                  <p>1/4</p>
+                  <input
+                    class="mdl-slider mdl-js-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="75"
+                    tabindex="0"
+                    oninput="quarterVolume = event.target.value / 100;"
+                  />
+                </div>
+                <div>
+                  <p>1/8</p>
+                  <input
+                    class="mdl-slider mdl-js-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                    tabindex="0"
+                    oninput="eighthVolume = event.target.value / 100;"
+                  />
 
-              <p>Eighth Note</p>
-              <input
-                class="mdl-slider mdl-js-slider"
-                type="range"
-                min="0"
-                max="100"
-                value="0"
-                tabindex="0"
-                oninput="eighthVolume = event.target.value / 100;"
-              />
+                  <p>1/16</p>
+                  <input
+                    class="mdl-slider mdl-js-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                    tabindex="0"
+                    oninput="sixteenthVolume = event.target.value / 100;"
+                  />
 
-              <p>Sixteenth Note</p>
-              <input
-                class="mdl-slider mdl-js-slider"
-                type="range"
-                min="0"
-                max="100"
-                value="0"
-                tabindex="0"
-                oninput="sixteenthVolume = event.target.value / 100;"
-              />
-
-              <p>Triplet</p>
-              <input
-                class="mdl-slider mdl-js-slider"
-                type="range"
-                min="0"
-                max="100"
-                value="0"
-                tabindex="0"
-                oninput="tripletVolume = event.target.value / 100;"
-              />
+                  <p>1/12</p>
+                  <input
+                    class="mdl-slider mdl-js-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="0"
+                    tabindex="0"
+                    oninput="tripletVolume = event.target.value / 100;"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </main>
