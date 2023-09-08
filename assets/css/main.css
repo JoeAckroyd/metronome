@@ -33,7 +33,7 @@ body {
 }
 
 .header {
-  margin-top: 20px;
+  margin-top: 16px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -47,6 +47,10 @@ h4,
 h5,
 h6 {
   margin: 20px 20px 10px 20px;
+}
+
+.mt-24 {
+  margin-top: 24px;
 }
 
 .mdl-slider:not(.is-lowest-value) {
@@ -68,31 +72,26 @@ h6 {
 
 .volumes-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
+  /* grid-auto-rows: 1fr; This ensures that all rows take up an equal proportion of the available space */
+  align-items: end;
   margin-bottom: 20px;
 }
 
-@media (min-width: 481px) {
-  .volumes-container {
-    grid-template-columns: 1fr 1fr;
-  }
+.volume-title {
+  margin-bottom: 0;
 }
 
-@media (max-height: 830px) {
-  .volumes-container {
-    grid-template-columns: 1fr 1fr;
-  }
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 16px 16px 8px 16px;
-  }
-
-  .header {
-    margin-top: 16px;
-  }
+p img {
+  margin-right: 10px;
 }
+
+h2 {
+  margin-top: 0;
+}
+
+.sub-label {
+  margin: 8px 16px 4px;
+  vertical-align: middle;
+}
+
