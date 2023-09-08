@@ -1,6 +1,8 @@
 body {
   color: inherit;
 
+  overflow: hidden;
+
   div,
   span {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Oxygen, Fira Sans,
