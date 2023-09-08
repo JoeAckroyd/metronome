@@ -1,6 +1,6 @@
 <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
     <!-- Background Rectangle -->
-    <rect width="33.3034" height="33.3034" rx="3" fill="#293E4A"/>
+    <rect width="33.3034" height="33.3034" rx="3" fill="#000000DE"/>
     
     <!-- Semibreve Note (resized and repositioned to fit the box) -->
     <g transform="scale(0.025) translate(-160, 330)">
