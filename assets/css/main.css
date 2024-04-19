@@ -97,3 +97,9 @@ h2 {
   vertical-align: middle;
 }
 
+.play-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
