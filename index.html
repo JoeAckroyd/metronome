@@ -21,7 +21,7 @@
 			<div>
 				<div class="header">
 					<div class="play-container">
-						<h6 class="mdl-typography--title">Play</h6>
+						<h6 class="mdl-typography--title">Start</h6>
 						<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-color--accent" id="add" onclick="play();">
 							<img id="buttonIcon" src="assets/img/play-icon.svg" alt="toggle play icon" />
 							<span class="visuallyhidden">Add</span>
@@ -38,10 +38,10 @@
 							<output name="bpm" id="bpmOutput">120</output><span class="mdl-typography--subhead"> bpm</span>
 						</h2>
 						<input class="mdl-slider mdl-js-slider" type="range" name="bpm" id="bpmInput" value="120" min="20" max="250" oninput="tempo = event.target.value; bpmOutput.value = bpmInput.value;" />
-						<h6 class="mdl-typography--title mt-24">Meter</h6>
+						<h6 class="mdl-typography--title mt-24">Takt</h6>
 						<h2 id="bpm" class="mdl-typography--display-1"><output name="count" id="countOutput">4</output><span> / 4</span></h2>
 						<input class="mdl-slider mdl-js-slider" type="range" name="count" id="countInput" value="4" min="1" max="12" oninput="meter = event.target.value; countOutput.value = countInput.value;" />
-						<h6 class="mdl-typography--title mt-24">Volume</h6>
+						<h6 class="mdl-typography--title mt-24">Lautstärke</h6>
 						<input class="mdl-slider mdl-js-slider" type="range" min="0" max="100" value="50" tabindex="0" oninput="masterVolume = event.target.value / 100;" />
 					</div>
 
