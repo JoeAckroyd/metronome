@@ -1,4 +1,5 @@
 var audioContext = null
+var clickBuffer = null
 var isPlaying = false // Are we currently playing?
 var startTime // The start time of the entire sequence.
 var currentTwelveletNote // What note is currently last scheduled?
@@ -16,10 +17,23 @@ var scheduleAheadTime = 0.1 // How far ahead to schedule audio (sec)
 // This is calculated from lookahead, and overlaps
 // with next interval (in case the timer is late)
 var nextNoteTime = 0.0 // when the next note is due.
-var noteLength = 0.05 // length of "beep" (in seconds)
+var noteLength = 0.035 // length of "click" (in seconds)
 var notesInQueue = [] // the notes that have been put into the web audio,
 // and may or may not have played yet. {note, time}
 var timerWorker = null // The Web Worker used to fire timer messages
+
+function createClickBuffer() {
+	var bufferSize = audioContext.sampleRate * 0.003 // 3ms of noise for attack
+	var buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate)
+	var data = buffer.getChannelData(0)
+
+	// Fill with white noise for the attack click
+	for (var i = 0; i < bufferSize; i++) {
+		data[i] = Math.random() * 2 - 1
+	}
+
+	return buffer
+}
 
 function maxBeats() {
 	var beats = meter * 12
@@ -44,41 +58,75 @@ function scheduleNote(beatNumber, time) {
 	// push the note on the queue, even if we're not playing.
 	notesInQueue.push({ note: beatNumber, time: time })
 
-	// create oscillator & gainNode & connect them to the context destination
-	var osc = audioContext.createOscillator()
-	var gainNode = audioContext.createGain()
-
-	osc.connect(gainNode)
-	gainNode.connect(audioContext.destination)
+	// Determine frequency and volume based on beat type
+	var frequency = 0
+	var volume = 0
 
 	if (beatNumber % maxBeats() === 0) {
 		if (accentVolume > 0.25) {
-			osc.frequency.value = 880.0
-			gainNode.gain.value = calcVolume(accentVolume)
+			frequency = 880.0
+			volume = calcVolume(accentVolume)
 		} else {
-			osc.frequency.value = 440.0
-			gainNode.gain.value = calcVolume(quarterVolume)
+			frequency = 440.0
+			volume = calcVolume(quarterVolume)
 		}
 	} else if (beatNumber % 12 === 0) {
-		// quarter notes = medium pitch
-		osc.frequency.value = 440.0
-		gainNode.gain.value = calcVolume(quarterVolume)
+		frequency = 440.0
+		volume = calcVolume(quarterVolume)
 	} else if (beatNumber % 6 === 0) {
-		osc.frequency.value = 440.0
-		gainNode.gain.value = calcVolume(eighthVolume)
+		frequency = 440.0
+		volume = calcVolume(eighthVolume)
 	} else if (beatNumber % 4 === 0) {
-		osc.frequency.value = 300.0
-		gainNode.gain.value = calcVolume(tripletVolume)
+		frequency = 300.0
+		volume = calcVolume(tripletVolume)
 	} else if (beatNumber % 3 === 0) {
-		// other 16th notes = low pitch
-		osc.frequency.value = 220.0
-		gainNode.gain.value = calcVolume(sixteenthVolume)
+		frequency = 220.0
+		volume = calcVolume(sixteenthVolume)
 	} else {
-		gainNode.gain.value = 0 // keep the remaining twelvelet notes inaudible
+		volume = 0 // keep the remaining twelvelet notes inaudible
 	}
 
-	osc.start(time)
-	osc.stop(time + noteLength)
+	if (volume > 0) {
+		// Create tonal component with pitch
+		var osc = audioContext.createOscillator()
+		var oscGain = audioContext.createGain()
+
+		osc.type = 'sine'
+		osc.frequency.value = frequency
+
+		osc.connect(oscGain)
+		oscGain.connect(audioContext.destination)
+
+		// Sharp exponential decay for crisp click
+		oscGain.gain.setValueAtTime(volume * 0.7, time)
+		oscGain.gain.exponentialRampToValueAtTime(0.01, time + noteLength)
+
+		osc.start(time)
+		osc.stop(time + noteLength)
+
+		// Add brief noise click for attack
+		var noiseSource = audioContext.createBufferSource()
+		var noiseGain = audioContext.createGain()
+		var noiseFilter = audioContext.createBiquadFilter()
+
+		noiseSource.buffer = clickBuffer
+
+		// Band-pass filter for warmer attack
+		noiseFilter.type = 'bandpass'
+		noiseFilter.frequency.value = 1200
+		noiseFilter.Q.value = 1.0
+
+		noiseSource.connect(noiseFilter)
+		noiseFilter.connect(noiseGain)
+		noiseGain.connect(audioContext.destination)
+
+		// Very brief noise burst
+		noiseGain.gain.setValueAtTime(volume * 0.2, time)
+		noiseGain.gain.exponentialRampToValueAtTime(0.01, time + 0.008)
+
+		noiseSource.start(time)
+		noiseSource.stop(time + 0.008)
+	}
 }
 
 function scheduler() {
@@ -104,6 +152,7 @@ function play() {
 
 function init() {
 	audioContext = new AudioContext()
+	clickBuffer = createClickBuffer()
 	timerWorker = new Worker("assets/js/worker.js")
 
 	timerWorker.onmessage = function (e) {
